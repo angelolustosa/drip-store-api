@@ -1,0 +1,2 @@
+#não enviar a node_modules, pois será criada com o npm i
+node_modules
