@@ -2,7 +2,7 @@ import Produto from "../models/Produto.js"
 
 class ProdutoController {
 
-    static criar = async (req, res) => {
+    static criar = async (req, res) => 
 
     }
 
