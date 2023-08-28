@@ -1,50 +1,35 @@
 import moment from "moment/moment.js";
-import { Produto } from "../models/Produto.js"
+import { Genero } from "../models/Genero.js";
 
-export class ProdutoController {
+export class GeneroController {
 
     static criar = async (req, res) => {
-        const { nome, genero, preco, desconto, tipo } = req.body;
-        const produto = { nome, genero, preco, desconto, tipo };
+        const { codigo, nome } = req.body;
+        const genero = { codigo, nome };
 
-        const produtoBD = await Produto.create(produto);
+        const generoBD = await Genero.create(genero);
 
         res.status(201).json({
-            data: produtoBD,
-            msg: "Produto criado com sucesso!",
+            data: generoBD,
+            msg: "Genero criado com sucesso!",
         });
 
     }
 
     static buscarTodos = async (req, res) => {
-        const produtos = await Produto.find().populate('genero')
-        res.status(200).json(produtos)
+        const generos = await Genero.find()
+        res.status(200).json(generos)
     }
 
-    static buscarPorId = (req, res) => {
+    static buscarPorId = async (req, res) => {
         const id = req.params.id
 
         if (!id) {
             res.status(422).json('Id não informado!')
         } else {
-            Produto
-                .findById(id)
-                .populate('genero', 'nome')
-                .exec((err, produtos) => {
-                    if (!err) {
-                        res.status(400).send({ message: `${err.message} - Id do produto não localizado.` })
-                    } else {
-                        res.status(200).json(produtos)
-                    }
-                })
+            const produto = await Produto.findById(id)
+            res.status(200).json(produto)
         }
-    }
-
-    static buscarPorGenero = async (req, res) => {
-        let codigo = req.query.genero
-        console.log('query:', req.query)
-        const produtos = await Produto.find({ genero: {codigo }}).exec()
-        res.status(200).json(produtos)
     }
 
     static atualizar = async (req, res) => {
