@@ -13,6 +13,6 @@ export default app.use(
     extended: true,
   })
 );
-
-routes(app)
 app.use(morgan('combined'))
+routes(app)
+
